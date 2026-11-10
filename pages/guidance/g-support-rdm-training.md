@@ -99,6 +99,8 @@ resources:
     category: external_resource
 ---
 
+THIS IS A TEST VerSION
+
 Research data management (RDM) training builds capacity for FAIR (Findable, Accessible, Interoperable, Reusable) data and Open Science. It helps researchers apply good practices and helps support staff give the same advice across projects. With growing expectations around data sharing, reproducibility and compliance, people need training that is easy to access, well targeted and here to stay.
 
 The sections below cover planning, delivery, quality and sustainability. You don't have to follow them in order. Start with what your organisation needs most.
