@@ -1,43 +1,8 @@
----
-layout: page
----
-
-{%- comment -%}
-Case-study layout – adapted from the ELITMa training-module pattern.
-
-  1. A tabbed metadata header at the top:
-     • "At a glance" tab – facts (org, country, scale, domain, status,
-       theme chips, link to the activity page).
-     • "Summary" tab – the description + lead_quote.
-  2. The page body ({{ content }}).
-  3. A resources table built from the `resources:` frontmatter list.
-  4. Related-pages navigation tiles built from `related_guidance:` and
-     `related_indicators:` (page_id arrays).
-
-Vocabularies live in _data/case_study/{themes,scales,domains,
-countries,outcome_status}.yml – keys in the frontmatter resolve to
-human-readable labels via Liquid `where` lookups.
-{%- endcomment -%}
-
 {%- comment -%}
 Breadcrumbs are rendered by `_includes/breadcrumb.html` (local override),
 which the parent `page` layout inserts above the H1 when
 `site.theme_variables.breadcrumb` is true.
 {%- endcomment -%}
-
-{%- assign cs = site.data.case_study -%}
-
-{%- assign has_card = false -%}
-{%- if page.description or page.lead_org or page.scale or page.domain or page.start or page.themes or page.country or page.external_url or page.lead_quote -%}
-  {%- assign has_card = true -%}
-{%- endif -%}
-
-{%- if has_card -%}
-{%- assign country = cs.countries | where: "key", page.country | first -%}
-{%- assign scale = cs.scales | where: "key", page.scale | first -%}
-{%- assign domain = cs.domains | where: "key", page.domain | first -%}
-{%- assign status = cs.outcome_status | where: "key", page.status | first -%}
-
 ---
 layout: page
 ---
@@ -55,6 +20,7 @@ Expected front matter:
 ESCO identifiers in YAML comments are intentionally not displayed or linked.
 {%- endcomment -%}
 
+{%- if page.description or page["last update"] or page.topics or page.skills or page.takeaways -%}
 <div class="case-study-meta">
   <nav aria-label="Guidance overview">
     <div class="nav nav-tabs case-study-meta__nav" role="tablist">
@@ -108,6 +74,7 @@ ESCO identifiers in YAML comments are intentionally not displayed or linked.
     </div>
   </div>
 </div>
+{%- endif -%}
 
 {{ content }}
 
