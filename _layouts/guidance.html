@@ -37,97 +37,80 @@ which the parent `page` layout inserts above the H1 when
 {%- assign scale = cs.scales | where: "key", page.scale | first -%}
 {%- assign domain = cs.domains | where: "key", page.domain | first -%}
 {%- assign status = cs.outcome_status | where: "key", page.status | first -%}
+
+---
+layout: page
+---
+{%- comment -%}
+Guidance metadata tabs. The parent `page` layout renders the Markdown body,
+resources, related pages, and other shared page elements.
+
+Expected front matter:
+  description: ...
+  last update: YYYY-MM-DD
+  topics: [topic one, topic two]
+  skills: [skill one, skill two]
+  takeaways: [takeaway one, takeaway two]
+
+ESCO identifiers in YAML comments are intentionally not displayed or linked.
+{%- endcomment -%}
+
 <div class="case-study-meta">
-    <nav>
-        <div class="nav nav-tabs case-study-meta__nav" role="tablist">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#cs-glance" type="button" role="tab" aria-controls="cs-glance" aria-selected="true">At a glance</button>
-            {%- if page.description or page.lead_quote -%}
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cs-summary" type="button" role="tab" aria-controls="cs-summary" aria-selected="false">Summary</button>
-            {%- endif -%}
-        </div>
-    </nav>
-
-    <div class="tab-content case-study-meta__content">
-        <!-- At a glance ----------------------------------------------- -->
-        <div class="tab-pane fade show active" id="cs-glance" role="tabpanel">
-            <div class="case-study-meta__fields">
-                {%- if page.lead_org or country -%}
-                <div class="case-study-meta__field">
-                    <div class="case-study-meta__label"><i class="fa-solid fa-building me-1" aria-hidden="true"></i>Organisation</div>
-                    <div class="case-study-meta__value">
-                        {%- if page.lead_org %}{{ page.lead_org }}{%- endif -%}
-                        {%- if country %}{%- if page.lead_org %}<span class="case-study-meta__sep" aria-hidden="true">·</span>{%- endif -%}{{ country.label }}{%- endif -%}
-                    </div>
-                    {%- if page.partners -%}
-                    <div class="case-study-meta__partners">with {{ page.partners | join: ", " }}</div>
-                    {%- endif -%}
-                </div>
-                {%- endif -%}
-
-                {%- if scale -%}
-                <div class="case-study-meta__field">
-                    <div class="case-study-meta__label"><i class="fa-solid fa-arrows-up-down-left-right me-1" aria-hidden="true"></i>Scale</div>
-                    <div class="case-study-meta__value">{{ scale.label }}</div>
-                </div>
-                {%- endif -%}
-
-                {%- if domain -%}
-                <div class="case-study-meta__field">
-                    <div class="case-study-meta__label"><i class="fa-solid fa-flask me-1" aria-hidden="true"></i>Domain</div>
-                    <div class="case-study-meta__value">{{ domain.label }}</div>
-                </div>
-                {%- endif -%}
-
-                {%- if page.start or status -%}
-                <div class="case-study-meta__field">
-                    <div class="case-study-meta__label"><i class="fa-solid fa-circle-check me-1" aria-hidden="true"></i>Status</div>
-                    <div class="case-study-meta__value">
-                        {%- if page.start %}Since {{ page.start }}{%- endif -%}
-                        {%- if page.start and status -%}<span class="case-study-meta__sep" aria-hidden="true">·</span>{%- endif -%}
-                        {%- if status -%}<span class="case-study-status case-study-status--{{ page.status }}">{{ status.label }}</span>{%- endif -%}
-                    </div>
-                </div>
-                {%- endif -%}
-            </div>
-
-            {%- if page.themes -%}
-            <ul class="case-study-meta__themes" aria-label="Themes">
-                {%- for t in page.themes -%}
-                {%- assign theme = cs.themes | where: "key", t | first -%}
-                {%- if theme -%}
-                <li class="case-study-chip" title="{{ theme.description | escape }}">{{ theme.label }}</li>
-                {%- endif -%}
-                {%- endfor -%}
-            </ul>
-            {%- endif -%}
-
-            {%- if page.external_url -%}
-            <p class="case-study-meta__link">
-                <a href="{{ page.external_url }}" target="_blank" rel="noopener">
-                    <i class="fa-solid fa-arrow-up-right-from-square me-1" aria-hidden="true"></i>{{ page.external_url_label | default: "Visit the activity page" }}
-                </a>
-            </p>
-            {%- endif -%}
-        </div>
-
-        <!-- Summary --------------------------------------------------- -->
-        {%- if page.description or page.lead_quote -%}
-        <div class="tab-pane fade" id="cs-summary" role="tabpanel">
-            {%- if page.description -%}
-            <p class="case-study-meta__summary">{{ page.description }}</p>
-            {%- endif -%}
-            {%- if page.lead_quote -%}
-            <blockquote class="pull-quote case-study-meta__quote">
-                <p>{{ page.lead_quote }}</p>
-            </blockquote>
-            {%- endif -%}
-        </div>
-        {%- endif -%}
+  <nav aria-label="Guidance overview">
+    <div class="nav nav-tabs case-study-meta__nav" role="tablist">
+      <button class="nav-link active" id="guidance-glance-tab" data-bs-toggle="tab" data-bs-target="#guidance-glance" type="button" role="tab" aria-controls="guidance-glance" aria-selected="true">At a glance</button>
+      <button class="nav-link" id="guidance-skills-tab" data-bs-toggle="tab" data-bs-target="#guidance-skills" type="button" role="tab" aria-controls="guidance-skills" aria-selected="false">Introduced skills</button>
+      <button class="nav-link" id="guidance-takeaways-tab" data-bs-toggle="tab" data-bs-target="#guidance-takeaways" type="button" role="tab" aria-controls="guidance-takeaways" aria-selected="false">Takeaways</button>
     </div>
+  </nav>
+  <div class="tab-content case-study-meta__content">
+    <div class="tab-pane fade show active" id="guidance-glance" role="tabpanel" aria-labelledby="guidance-glance-tab" tabindex="0">
+      {%- if page.description -%}
+      <div class="case-study-meta__field">
+        <div class="case-study-meta__label">Description</div>
+        <div class="case-study-meta__value">{{ page.description | escape }}</div>
+      </div>
+      {%- endif -%}
+      {%- if page["last update"] -%}
+      <div class="case-study-meta__field">
+        <div class="case-study-meta__label">Last update</div>
+        <div class="case-study-meta__value"><time datetime="{{ page["last update"] | date: '%Y-%m-%d' }}">{{ page["last update"] | date: '%-d %B %Y' }}</time></div>
+      </div>
+      {%- endif -%}
+      {%- if page.topics and page.topics.size > 0 -%}
+      <div class="case-study-meta__field">
+        <div class="case-study-meta__label">Topics</div>
+        <ul class="case-study-meta__themes" aria-label="Topics">
+          {%- for topic in page.topics -%}
+          <li class="case-study-chip">{{ topic | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      {%- endif -%}
+    </div>
+    <div class="tab-pane fade" id="guidance-skills" role="tabpanel" aria-labelledby="guidance-skills-tab" tabindex="0">
+      {%- if page.skills and page.skills.size > 0 -%}
+      <ul>
+        {%- for skill in page.skills -%}
+        <li>{{ skill | escape }}</li>
+        {%- endfor -%}
+      </ul>
+      {%- endif -%}
+    </div>
+    <div class="tab-pane fade" id="guidance-takeaways" role="tabpanel" aria-labelledby="guidance-takeaways-tab" tabindex="0">
+      {%- if page.takeaways and page.takeaways.size > 0 -%}
+      <ul>
+        {%- for takeaway in page.takeaways -%}
+        <li>{{ takeaway | escape }}</li>
+        {%- endfor -%}
+      </ul>
+      {%- endif -%}
+    </div>
+  </div>
 </div>
-{%- endif -%}
 
 {{ content }}
+
 
 {%- comment -%}
 Resources table – rendered automatically by `_includes/resource-table-page.html`
