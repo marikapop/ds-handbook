@@ -1,6 +1,6 @@
 ---
 title: RDM Training
-layout: case-study
+layout: guidance
 type: Guidance
 search_exclude: true
 contributors: [Minna Ahokas, Diana Pilvar, Marina Popleteeva, Mijke Jetten, Heleri Inno, Jana Martínková, Aída Moure Fernández]
